@@ -1,0 +1,22 @@
+# 1. Use OpenJDK 17 base image
+FROM openjdk:17-jdk-slim 
+
+# 2. Build-time variable for Maven version
+ARG MAVEN_VERSION=3.9.8
+
+# 3. Runtime environment variable for app home path
+ENV APP_HOME=/app
+
+# 4. Set the working directory inside the container
+WORKDIR $APP_HOME
+
+# 5. Copy all project files from your machine to the container
+COPY . .
+
+# 6. Install Maven in multiple separate layers
+RUN apt-get update 
+RUN apt-get install -y wget
+RUN ./mvnw package
+
+# 7. Set the default process
+ENTRYPOINT ["./mvnw","spring-boot:run"]

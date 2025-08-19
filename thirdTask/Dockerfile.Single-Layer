@@ -1,0 +1,19 @@
+# 1. Same base image for build stage
+FROM openjdk:17-jdk-slim 
+
+# 2. Maven version as build-time variable
+ARG MAVEN_VERSION=3.9.8
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
+
+# 3. Copy files (you can also copy before build if needed)
+COPY . .
+
+# 4. Install Maven and build in ONE layer
+RUN apt-get update && \
+    apt-get install -y wget && \
+    ./mvnw package 
+
+# 5. Runtime stage
+cmd ["./mvnw","spring-boot:run"]
+ENTRYPOINT [ "echo" , "App Has Started" ]

@@ -1,0 +1,27 @@
+1-add user
+-Delete user
+ 
+2-change permission by 2 ways 
+ 
+3-create folder and delete folder 
+ 
+4-search on file or dir 
+ 
+ 
+5-preview data in file 
+ 
+6-make alias for some commands 
+ 
+7-nano & history , Date 
+ 
+8-print working dir
+ 
+9-switch between 2 users 
+ 
+10-copy files 
+ 
+11-move files 
+ 
+12-rename files 
+ 
+13-delete dir
