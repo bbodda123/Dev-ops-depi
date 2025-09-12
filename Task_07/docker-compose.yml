@@ -1,0 +1,95 @@
+services:
+  # spring app 
+  spring:
+    image: spring:small
+    ports:
+      - "8086:8080"
+    environment:
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypass
+    depends_on:
+      - mysql
+      - postgres
+    networks:
+      - app_net
+  # mysql
+  mysql:
+    image: mysql:mysqlMain
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=mydb
+      - MYSQL_USER=myuser
+      - MYSQL_PASSWORD=mypass
+    volumes:
+      - vol-sql:/var/lib/mysql
+    networks:
+      - app_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  # postgres 
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - vol-postgres:/var/lib/postgresql/data
+    networks:
+      - app_net
+  # Prometheus
+  prometheus:
+    image: docker.io/prom/prometheus:v3.5.0
+    container_name: prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.retention.size=2GB
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    networks:
+      - app_net
+  # Grafana
+  grafana:
+    image: docker.io/grafana/grafana-oss:12.1.1
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - app_net
+
+  # postgres exporter for prometheus
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://myuser:mypass@postgres:5432/mydb?sslmode=disable"
+    ports:
+      - "9187:9187"
+    networks:
+      - app_net
+
+volumes:
+  vol-postgres:
+  vol-sql:
+  grafana-data:
+    driver: local
+  prometheus-data:
+    driver: local
+networks:
+  app_net:

@@ -1,0 +1,54 @@
+# roles/docker_nginx/tasks/main.yml
+---
+- name: Update apt package index
+  apt:
+    update_cache: yes
+
+- name: Install required system packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - gnupg
+    state: present
+
+- name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker repository
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    # Ansible Fact
+    # ansible_distribution_release Will Make The Ansible Choose depending on The ubuntu Version
+    # EX~ focal → Ubuntu 20.04 LTS  jammy → Ubuntu 22.04  LTS bionic → Ubuntu 18.04 LTS
+    state: present
+
+- name: Install Docker or (Update if Wanted)
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes   # >>> apt-get update
+  notify: Restart docker
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: no
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  notify: Restart nginx   # runs The Handler When packages change
+
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: no
+  when: nginx_enabled | default(true)

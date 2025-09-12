@@ -1,0 +1,13 @@
+---
+- name: Installing Nginx on web servers
+  hosts: happy
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Nginx is Now running Boda
+      service:
+        name: nginx
+        state: started

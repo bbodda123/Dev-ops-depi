@@ -1,0 +1,6 @@
+---
+- name: Installing Nginx and docker on our servers
+  hosts: happy
+  become: yes
+  roles:
+    - theRole
