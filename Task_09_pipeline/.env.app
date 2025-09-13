@@ -1,4 +1,0 @@
-SPRING_PROFILES_ACTIVE=mysql
-SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/name # change YOURDATBASE_NAME to your actual db name
-SPRING_DATASOURCE_USERNAME=petclinic
-SPRING_DATASOURCE_PASSWORD=petclinic
