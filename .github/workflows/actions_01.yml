@@ -1,0 +1,39 @@
+name: Best Workflow Ever
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'Task_10_actions/**'
+
+env:
+  APP_PATH: ./Task_10_actions
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+      - name: Run The Tests
+        run: npm test
+        working-directory: ${{ env.APP_PATH }}   
+
+  build_Run:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+      - name: Install & Start
+        run: |
+          npm install --production
+          npm start &
+          sleep 5
+        working-directory: ${{ env.APP_PATH }}
+      - name: Curl the App
+        run: curl http://localhost:3000
