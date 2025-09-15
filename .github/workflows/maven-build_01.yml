@@ -1,4 +1,4 @@
-name: Java CI – Spring Petclinic
+name: Java CI – Spring Petclinic - Mysql
 
 on:
   push:
@@ -13,12 +13,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: petclinic
+          MYSQL_USER: petclinic
+          MYSQL_PASSWORD: petclinic
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ppetclinic"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       # 1. Checkout the code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Set up Java and make caching for maven for later builds to make it faster
+      # 2. Set up Java and enable Maven dependency caching
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -26,13 +42,12 @@ jobs:
           java-version: 17
           cache: maven
 
-      # 3. Build, run tests, and install
-      - name: Build and test with Maven
+      # 3. Build and test using the MySQL profile
+      - name: Build and test with Maven (MySQL profile)
         working-directory: ${{ env.APP_PATH }}
-        run: mvn clean install -B
-        # 'install' will run tests and put the packaged app in your local Maven repo (~/.m2)
+        run: mvn clean install -B -Dspring.profiles.active=mysql
 
-      # 4. (Optional) Upload the JAR artifact so you can download it from the workflow
+      # 4. Upload the packaged JAR as an artifact
       - name: Upload built JAR
         uses: actions/upload-artifact@v4
         with:

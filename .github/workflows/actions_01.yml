@@ -37,3 +37,4 @@ jobs:
         working-directory: ${{ env.APP_PATH }}
       - name: Curl the App
         run: curl http://localhost:3000
+        
