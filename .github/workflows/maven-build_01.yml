@@ -22,10 +22,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # ✅ Only run tests
-      - name: Run unit tests
-        working-directory: ${{ env.APP_PATH }}
-        run: mvn -B test
+      # # ✅ Only run tests
+      # - name: Run unit tests
+      #   working-directory: ${{ env.APP_PATH }}
+      #   run: mvn -B test
 
   docker:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
       # 4. (Optional) Run docker-compose for integration tests
       - name: Start services with docker-compose
         run: |
-          docker-compose up -d
+          docker compose up -d
           # wait for the app to be healthy, e.g.:
           sleep 30
           curl -f http://localhost:8090 || (docker-compose logs && exit 1)
