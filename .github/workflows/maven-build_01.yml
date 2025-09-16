@@ -51,6 +51,7 @@ jobs:
 
       # 4. (Optional) Run docker-compose for integration tests
       - name: Start services with docker-compose
+        working-directory: ${{ env.APP_PATH }}
         run: |
           docker compose up -d
           # wait for the app to be healthy, e.g.:
