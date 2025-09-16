@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mysql:
-    image: mysql:mysqlMain
+    image: mysql:latest
     container_name: mysql-petclinic-latest
     restart: always
     env_file:
@@ -13,7 +13,7 @@ services:
       - new_data:/var/lib/mysql
 
   petclinic:
-    image: spring-petclinic-small
+    image: bbodda123/petclinic:latest
     container_name: spring-petclinic-app
     restart: always
     depends_on:
