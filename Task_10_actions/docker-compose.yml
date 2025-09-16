@@ -1,21 +1,27 @@
+version: "3.8"
+
 services:
   mysql:
-    image: mysql:9.2
+    image: mysql:latest
+    container_name: mysql-petclinic-latest
+    restart: always
+    env_file:
+      - .env.mysql
     ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=petclinic
-      - MYSQL_DATABASE=petclinic
+      - "3306"
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
-  postgres:
-    image: postgres:17.5
+      - new_data:/var/lib/mysql
+
+  petclinic:
+    image: bbodda123/petclinic:latest
+    container_name: spring-petclinic-app
+    restart: always
+    depends_on:
+      - mysql
+    env_file:
+      - .env.app
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=petclinic
-      - POSTGRES_USER=petclinic
-      - POSTGRES_DB=petclinic
+      - "8090:8080"
+
+volumes:
+  new_data:
