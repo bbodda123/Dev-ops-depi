@@ -27,7 +27,7 @@ jobs:
           cache: maven
 
       - name: Build and test with Maven
-        working-directory: ${{ env.APP_PATH }}/spring-petclinic
+        working-directory: ${{ env.APP_PATH }}/spring-app
         run: mvn clean install -B 
 
       # 4. Jar File That Can Be Download After 
@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: spring-petclinic-jar
-          path: ${{ env.APP_PATH }}/spring-petclinic/target/*.jar
+          path: ${{ env.APP_PATH }}/spring-app/target/*.jar
 
   docker:
     runs-on: ubuntu-latest
