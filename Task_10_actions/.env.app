@@ -1,0 +1,4 @@
+SPRING_PROFILES_ACTIVE: mysql
+SPRING_DATASOURCE_URL: jdbc:mysql://mysql-petclinic-latest-jenkins:3306/petclinic
+SPRING_DATASOURCE_USERNAME: petclinic
+SPRING_DATASOURCE_PASSWORD: petclinic

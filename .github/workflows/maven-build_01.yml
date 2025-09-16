@@ -7,7 +7,7 @@ on:
       - 'Task_10_actions/**'
 
 env:
-  APP_PATH: ./Task_10_actions/spring-petclinic
+  APP_PATH: ./Task_10_actions
 
 jobs:
   build:
