@@ -28,7 +28,7 @@ jobs:
 
       - name: Build and test with Maven
         working-directory: ${{ env.APP_PATH }}
-        run: mvn clean install -B 
+        run: mvn test -B
 
       # 4. Jar File That Can Be Download After 
       - name: Upload built JAR
