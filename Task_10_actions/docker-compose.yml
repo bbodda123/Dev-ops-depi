@@ -13,7 +13,7 @@ services:
       - new_data:/var/lib/mysql
 
   petclinic:
-    image: bbodda123/petclinic:latest
+    image: bbodda123/my-app:latest
     container_name: spring-petclinic-app
     restart: always
     depends_on:
