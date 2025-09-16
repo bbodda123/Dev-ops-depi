@@ -3,7 +3,7 @@ name: Docker CI – Spring Petclinic
 on:
   push:
     branches: [ master ]   # or main
-    paths: [ 'Task_10_actions/**']
+    paths: [ 'Task_01/**']
 
 jobs:
   docker:

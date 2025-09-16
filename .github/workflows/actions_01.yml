@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - 'Task_10_actions/**'
+      - 'Task_01/**'
 
 env:
   APP_PATH: ./Task_10_actions
