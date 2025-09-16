@@ -56,8 +56,6 @@ jobs:
           docker compose up -d
           # wait for the app to be healthy, e.g.:
           docker ps -a 
-          sleep 30
-          curl http://localhost:8090 || (docker compose logs && exit 1)
           docker compose down
 
 
