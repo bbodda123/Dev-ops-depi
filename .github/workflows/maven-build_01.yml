@@ -41,13 +41,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # 3. Build the image from the Dockerfile
-      # - name: Build Docker image
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: ${{ env.APP_PATH }}
-      #     file: ${{ env.APP_PATH }}/Dockerfile
-      #     push: true            
-      #     tags: bbodda123/petclinic:latest
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.APP_PATH }}
+          file: ${{ env.APP_PATH }}/Dockerfile
+          push: true            
+          tags: bbodda123/petclinic:latest
 
       # 4. (Optional) Run docker-compose for integration tests
       - name: Start services with docker-compose
@@ -57,7 +57,7 @@ jobs:
           # wait for the app to be healthy, e.g.:
           docker ps -a 
           sleep 30
-          curl -f http://localhost:8090 || (docker-compose logs && exit 1)
+          curl http://localhost:8090 || (docker compose logs && exit 1)
           docker compose down
 
 
