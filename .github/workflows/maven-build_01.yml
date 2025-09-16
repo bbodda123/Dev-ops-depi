@@ -8,10 +8,10 @@ on:
 
 env:
   APP_PATH: ./Task_10_actions
-  OS_TYPE: ubuntu-latest
+
 jobs:
   build:
-    runs-on: ${{env.OS_TYPE}}
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout the code
@@ -38,7 +38,7 @@ jobs:
           path: ${{ env.APP_PATH }}/target/*.jar
 
   docker:
-    runs-on: ${{env.OS_TYPE}}
+    runs-on: ubuntu-latest
     needs: build
     steps:
       # 1. Checkout source code
